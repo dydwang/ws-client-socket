@@ -1,0 +1,16 @@
+{
+  "name": "ws-client-socket",
+  "version": "1.0.0",
+  "description": "ws客户端",
+  "main": "client.js",
+  "scripts": {
+    "test": "node test/serve.js & node test/index.js"
+  },
+  "author": "dydwang",
+  "license": "ISC",
+  "dependencies": {
+    "tiny-emitter": "^2.1.0",
+    "uuid": "^8.3.2",
+    "ws": "^8.1.0"
+  }
+}
