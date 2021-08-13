@@ -7,6 +7,8 @@ const cmdAPIModule = require('./cmd'); // 默认的cmd
 const path = 'ws://127.0.0.1:10001'; // 本机
 
 class ClientSocket{
+    // 初始化的cmdAPI 不需要每次实例化都引入cmdAPI
+    static cmdAPIInit = {};
     constructor(config = {}) {
         const {
             url = path,  // 服务端地址
@@ -19,7 +21,8 @@ class ClientSocket{
         this.url = url;
         this.cmdAPI = {
             ...cmdAPIModule,
-            ... cmdAPI
+            ...ClientSocket.cmdAPIInit,
+            ...cmdAPI
         };
         // node环境
         if(typeof(WebSocket) === "undefined") {
@@ -29,7 +32,7 @@ class ClientSocket{
             };
         }else{
             //浏览器环境
-            this.wsConfig = wsConfig || "";
+            this.wsConfig = typeof(wsConfig) !== "string" ? null : wsConfig;
         }
         this.heartTimeout = heartTimeout;
         this.reconnectTime = reconnectTime;
@@ -170,11 +173,10 @@ class ClientSocket{
             const messageData = JSON.parse(data.toString());
             this.sockSend.emit(messageData);
         }
-        // 读取blob
-        const fileReader = typeof(FileReader) !== "undefined" ? new FileReader() : {};
         // web 环境接收信息
         const onMessageWeb = (res) => {
-            console.log(res);
+            // 读取blob 每次都新建 避免相互影响
+            const fileReader = new FileReader();
             //拿到任何消息都说明当前连接是正常的  重新开始心跳检测
             this.heartCheck.startHeart();
             //将Blob 对象转换成字符串

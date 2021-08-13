@@ -1,6 +1,5 @@
 const UUID = require('uuid');
 const emitter = require('tiny-emitter/instance'); // 发布订阅插件
-
 class SockSend {
     constructor(cmdAPI) {
         this.emitter = emitter;
@@ -14,6 +13,9 @@ class SockSend {
     // 向serve通信
     // 注册事件 把事件存储起来
     send(cmd, options = {}, callback) {
+        if(!this.cmdAPI[cmd]) {
+            return console.error(new Error(`无法通信，请注册cmd:${cmd}事件`))
+        }
         const opts = {
             content: {...options}, // 通信传值 client -> serve
             config: {}, // 配置
@@ -54,7 +56,9 @@ class SockSend {
                 resData,
                 socket: this.socket,
             });
-            this.cmdAPI[cmd]({}).onmessage(resData, this.socket, 1)
+            this.cmdAPI[cmd]
+                ? this.cmdAPI[cmd]({}).onmessage(resData, this.socket, 1)
+                : console.error(new Error(`无法接收，未注册cmd:${cmd}事件`));
         }else{
             // 客户端触发  服务端返回
             // client -> serve -> client

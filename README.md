@@ -5,6 +5,11 @@
 npm install ws-client-socket -S
 ```
 
+###测试
+```
+本地环境短时间建立连接进行通信（client -> serve -> client）:1w约3.5s, 1.5w约5s
+```
+
 ### 初始化项目
 ```
 const ClientSocket = require('ws-client-socket');
@@ -71,6 +76,65 @@ clientSocket.sockSend.emitter.on('test', ({resData})=>{
 });
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### cmdAPI
+```
+// 可参考/cmd/index.js
+
+const heart = require('./heart');
+const test = require('./test');
+module.exports = {
+    heart,
+    test
+}
+// heart.js 心跳检测  
+const UUID = require('uuid');
+module.exports = ({uuid = UUID.v1(), content = {}}) => {
+    return {
+        data: {
+            uuid,// 任务id
+            cmd: 'heart',
+            content: {
+                ...content,
+            },
+        },
+        // onmessage里调用的函数
+        // messageData serve推送来的数据
+        // type = 1  serve -> client
+        // type = undefined client -> serve -> client
+        onmessage: (messageData, socket, type) => {
+            console.log('成功心跳');
+        }
+    }
+}
+```
+
+
+### 初始化cmdAPI
+```
+const ClientSocket = require('../index');
+const cmdAPI = {
+    result:()=>{
+        return {
+            data:{
+                cmd: 'result',
+                content:{}
+            },
+            onmessage:()=>{}
+        }
+    }
+};
+// 只引入一次cmdAPI
+ClientSocket.cmdAPIInit = cmdAPI;
+module.export = ClientSocket;
+
+// 或者每次都单独引入
+const ClientSocket = require('../index');
+new ClientSocket({
+    cmdAPI
+})
+
+```
+
+### github
+[![Build](https://img.shields.io/github/workflow/status/websockets/ws/CI/master?label=build&logo=github)](https://github.com/dydwang/ws-client-socket)
 

@@ -1,8 +1,9 @@
 {
   "name": "ws-client-socket",
-  "version": "1.0.0",
-  "description": "ws客户端",
-  "main": "client.js",
+  "version": "1.0.3",
+  "description": "ws客户端 websocket 发布订阅 心跳检测 超时重启",
+  "main": "index.js",
+  "repository": "https://github.com/dydwang/ws-client-socket",
   "scripts": {
     "test": "node test/serve.js & node test/index.js"
   },
