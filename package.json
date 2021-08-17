@@ -1,17 +1,30 @@
 {
   "name": "ws-client-socket",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "ws客户端 websocket 发布订阅 心跳检测 超时重启",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "index.d.ts",
   "repository": "https://github.com/dydwang/ws-client-socket",
   "scripts": {
-    "test": "node test/serve.js & node test/index.js"
+    "build": "tsc"
   },
+
+  "files": [
+    "src",
+    "test",
+    "cmd",
+    "dist",
+    "index.ts"
+  ],
   "author": "dydwang",
   "license": "ISC",
   "dependencies": {
     "tiny-emitter": "^2.1.0",
     "uuid": "^8.3.2",
     "ws": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.6.1",
+    "typescript": "^4.3.5"
   }
 }
