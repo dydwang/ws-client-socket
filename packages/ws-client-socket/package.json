@@ -1,13 +1,13 @@
 {
   "name": "ws-client-socket",
-  "version": "0.3.10",
+  "version": "0.3.11",
   "description": "ws客户端",
   "main": "index.js",
   "module": "dist/ws-client-socket.esm-bundler.js",
   "types": "dist/ws-client-socket.d.ts",
   "author": "dydwang",
   "license": "ISC",
-  "homepage": "https://gitlab.hzleaper.com:81/dydwang/ws-client-socket",
+  "homepage": "https://github.com/dydwang/ws-client-socket",
   "dependencies": {
     "mitt": "^3.0.0",
     "uuid": "8.3.2",

@@ -2,11 +2,8 @@
 
 ## 下载
 ```
-npm install @lp/ws-client-socket -S
+npm install ws-client-socket -S
 ```
-
-## 源码
-https://gitlab.hzleaper.com:81/dydwang/ws-client-socket/-/tree/main/packages/ws-client-socket
 
 ## 测试
 ```
@@ -14,8 +11,8 @@ https://gitlab.hzleaper.com:81/dydwang/ws-client-socket/-/tree/main/packages/ws-
 ```
 ## 引入
 ```
-const {ClientSocket} = require('@lp/ws-client-socket');
-import {ClientSocket} from '@lp/ws-client-socket';
+const {ClientSocket} = require('ws-client-socket');
+import {ClientSocket} from 'ws-client-socket';
 ```
 
 ## 示例 
@@ -25,7 +22,7 @@ import {ClientSocket} from '@lp/ws-client-socket';
 
 ## 实例化化项目
 ```
-const {ClientSocket} = require('@lp/ws-client-socket')
+const {ClientSocket} = require('ws-client-socket')
 exports.clientSocket = new ClientSocket({
     url: 'ws://127.0.0.1:8989',
     restartMax: -1, // 无限重启
