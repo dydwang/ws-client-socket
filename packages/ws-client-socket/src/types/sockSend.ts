@@ -1,30 +1,17 @@
-import {
-    Socket,
-    Cmd,
-    IsCacheCmd,
-    ReqContent,
-    UUID,
-    CmdAPIInit,
-    CmdAPIItem,
-    ReqInterceptors,
-    ResInterceptors,
-    ClientSocketOptions
-} from './client'
+import { ReqContent, SendData, SendDataReq, SendDataRes, SocketData, SocketDataRes, UUID } from './basics'
+
+export type ReqInterceptors = (req: SendDataReq) => SocketData | Promise<SocketData>;
+export type ResInterceptors = (res: SocketDataRes) => SendDataRes | Promise<SendDataRes>;
+
 export type SockSendOptions = {
-    socket: Socket,
-    heartCmd: Cmd,
-    isCacheCmd: IsCacheCmd,
-    cmdAPI: CmdAPIInit,
-    reqInterceptors: ReqInterceptors,
-    resInterceptors: ResInterceptors
+    url: string,
+    clientSend: (req: SendDataReq) => void
 }
 
 export interface SendOptions {
     isOff?: boolean // 发布一次就注销
-    isCacheCmd?: IsCacheCmd // 是否缓存
     timeout?: number // 默认不超时
-    reqInterceptors?: ReqInterceptors, // 请求拦截器
-    resInterceptors?: ResInterceptors, // 响应拦截器
+    onSendBefore?: (req: SendDataReq) => void;
 }
 
 export interface SockSendData {
@@ -33,27 +20,17 @@ export interface SockSendData {
     uuid?: UUID
 }
 
-export interface SendReq extends CmdAPIItem{
-
+export interface SendCallbackData {
+    req: SendDataReq,
+    res: SendDataRes,
 }
-
-export interface SendRes extends CmdAPIItem{
-    error_msg?: string,
-    status?: -1 | 0 | 1, // -1 : 失败 0：进行中 1：成功
-}
-
-export interface SendCallbackBack {
-    req: SendReq,
-    res: SendRes,
-    socket: Socket
-}
-export type SendCallback = (data: SendCallbackBack) => any;
+export type SendCallback = (data: SendCallbackData) => void;
 
 export interface SendCmdCacheItem {
-    req: CmdAPIItem,
+    req: SendData,
     options: SendOptions,
-    resolve: any | PromiseConstructor["resolve"],
-    reject: any | PromiseConstructor["reject"],
+    resolve: (value: SendCallbackData | PromiseLike<SendCallbackData>) => void,
+    reject: (reason?: any) => void,
     status: 'pending' | 'resolved' | 'rejected',
     callback?: SendCallback,
     onTimeout?: NodeJS.Timeout

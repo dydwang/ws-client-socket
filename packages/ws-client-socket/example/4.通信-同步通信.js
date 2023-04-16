@@ -8,7 +8,7 @@ const init = async () => {
   // 等待连接三次
   wsState = await clientSocket.waitCreate(3);
   // 同步 client -> serve -> client
-  const {req, res, socket} = await clientSocket.sockSend.sendSync('test', {
+  const {req, res, socket} = await clientSocket.sockSend.send('test', {
     content: {
       name: '张三'
     }

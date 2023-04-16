@@ -6,6 +6,9 @@ clientSocket.createSocket().then(state => {
 const init = async () => {
   // 上面的websocket可能还未连接成功
   // 等待连接三次
+  // clientSocket.on('*', data => {
+  //   console.log(data)
+  // })
   wsState = await clientSocket.waitCreate(3);
   console.log(wsState)
 }
